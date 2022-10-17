@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.ResponseEntity;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -18,11 +20,13 @@ class CodeAPITest {
     void getCodesTest() throws IOException, ParseException {
         CodeAPI codeAPI = new CodeAPI();
 
-        List<CodeDto> codes = codeAPI.getCodes();
+        Map<String, CodeDto> codes = codeAPI.getCodes();
+        ArrayList<CodeDto> codeDtos = new ArrayList<>(codes.values());
 
+        System.out.println(codeDtos.size());
         for (CodeDto cor :
-                codes) {
-            System.out.println(codes.indexOf(cor) + ":" + cor);
+                codeDtos) {
+            System.out.println(codeDtos.indexOf(cor) + ":" + cor);
         }
 
     }

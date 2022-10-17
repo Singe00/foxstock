@@ -1,15 +1,11 @@
 package kumoh.opensource.foxstock.api;
 
-
-import kumoh.opensource.foxstock.api.dto.CodeDto;
 import kumoh.opensource.foxstock.api.dto.FinaStatDto;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import kumoh.opensource.foxstock.api.dto.FnCoFinaStatDto;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -19,20 +15,14 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-@Slf4j
-@Component
-@RequiredArgsConstructor
-public class FinaStatAPI {
+public class FnCoFinaStatAPI {
+    private static final String apiKey = ConstServiceKey.FNCO_FINA_STAT_SERVICE_KEY;
+    private static final String url = "http://apis.data.go.kr/1160100/service/GetFnCoFinaStatCredInfoService/getFnCoSummFinaStat";
 
-    private static final String apiKey = ConstServiceKey.FINA_STAT_SERVICE_KEY;
-    private static final String url = "http://apis.data.go.kr/1160100/service/GetFinaStatInfoService/getSummFinaStat";
-
-    public Map<String,Map<String, FinaStatDto>> getFinaStat() throws IOException, ParseException {
+    public Map<String, Map<String, FnCoFinaStatDto>> getFnCoFinaStat() throws IOException, ParseException {
 
         int nowYear = LocalDate.now().getYear();
         String firstYear = Integer.toString(nowYear-1);
@@ -43,16 +33,16 @@ public class FinaStatAPI {
         String secondRequest = request(secondYear);
         String thirdRequest = request(thirdYear);
 
-        Map<String, FinaStatDto> firstFinaStatDtos = parsingRequest(firstRequest);
-        Map<String, FinaStatDto> secondFinaStatDtos = parsingRequest(secondRequest);
-        Map<String, FinaStatDto> thridFinaStatDtos = parsingRequest(thirdRequest);
+        Map<String, FnCoFinaStatDto> firstFinaStatDtos = parsingRequest(firstRequest);
+        Map<String, FnCoFinaStatDto> secondFinaStatDtos = parsingRequest(secondRequest);
+        Map<String, FnCoFinaStatDto> thridFinaStatDtos = parsingRequest(thirdRequest);
 
-        Map<String, Map<String, FinaStatDto>> totalFinaStatDtos = new HashMap<>();
-        totalFinaStatDtos.put("firstYear", firstFinaStatDtos);
-        totalFinaStatDtos.put("secondYear", secondFinaStatDtos);
-        totalFinaStatDtos.put("thirdYear", thridFinaStatDtos);
+        Map<String, Map<String, FnCoFinaStatDto>> totalFnCoFinaStatDtos = new HashMap<>();
+        totalFnCoFinaStatDtos.put("firstYear", firstFinaStatDtos);
+        totalFnCoFinaStatDtos.put("secondYear", secondFinaStatDtos);
+        totalFnCoFinaStatDtos.put("thirdYear", thridFinaStatDtos);
 
-        return totalFinaStatDtos;
+        return totalFnCoFinaStatDtos;
     }
 
 
@@ -81,7 +71,7 @@ public class FinaStatAPI {
         return result;
     }
 
-    private Map<String, FinaStatDto> parsingRequest(String requestResult) throws ParseException {
+    private Map<String, FnCoFinaStatDto> parsingRequest(String requestResult) throws ParseException {
         JSONParser jsonParser = new JSONParser();
         JSONObject parsed = (JSONObject) jsonParser.parse(requestResult);
         JSONObject response = (JSONObject) parsed.get("response");
@@ -89,22 +79,22 @@ public class FinaStatAPI {
         JSONObject items = (JSONObject) body.get("items");
         JSONArray item = (JSONArray) items.get("item");
 
-        Map<String,FinaStatDto> finaStatDtoList = new HashMap<>();
+        Map<String,FnCoFinaStatDto> fnCoFinaStatDtoList = new HashMap<>();
 
         for(int i = 0; i < item.size(); i++){
             JSONObject obj = (JSONObject) item.get(i);
-            FinaStatDto finaStatDto = new FinaStatDto();
+            FnCoFinaStatDto fnCoFinaStatDto = new FnCoFinaStatDto();
             if(obj.get("fnclDcdNm").equals("연결요약재무제표")) {
-                finaStatDto.setCrno((String)obj.get("crno"));
-                finaStatDto.setBizYear((String) obj.get("bizYear"));
-                finaStatDto.setEnpCrtmNpf((String) obj.get("enpCrtmNpf"));
-                finaStatDto.setEnpTcptAmt((String) obj.get("enpTcptAmt"));
+                fnCoFinaStatDto.setCrno((String)obj.get("crno"));
+                fnCoFinaStatDto.setBizYear((String) obj.get("bizYear"));
+                fnCoFinaStatDto.setFncoCrtmNpf((String) obj.get("fncoCrtmNpf"));
+                fnCoFinaStatDto.setFncoTcptAmt((String) obj.get("fncoTcptAmt"));
             }
-            finaStatDtoList.put(finaStatDto.getCrno(), finaStatDto);
+            fnCoFinaStatDtoList.put(fnCoFinaStatDto.getCrno(), fnCoFinaStatDto);
 
         }
 
-        return finaStatDtoList;
+        return fnCoFinaStatDtoList;
     }
 
 }

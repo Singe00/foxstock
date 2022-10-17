@@ -15,7 +15,9 @@ import java.io.InputStreamReader;
 import java.net.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @Slf4j
@@ -25,7 +27,7 @@ public class CodeAPI {
     private static final String apiKey = ConstServiceKey.CODE_SERVICE_KEY;
     private static final String url = "http://apis.data.go.kr/1160100/service/GetKrxListedInfoService/getItemInfo";
 
-    public List<CodeDto> getCodes() throws IOException, ParseException {
+    public Map<String, CodeDto> getCodes() throws IOException, ParseException {
         StringBuilder urlBuilder = new StringBuilder(url);
         urlBuilder.append("?" + URLEncoder.encode("serviceKey", StandardCharsets.UTF_8) + "=" + apiKey );
         urlBuilder.append("&" + URLEncoder.encode("numOfRows", StandardCharsets.UTF_8) + "=" + URLEncoder.encode("5000",StandardCharsets.UTF_8));
@@ -51,7 +53,8 @@ public class CodeAPI {
         JSONObject items = (JSONObject) body.get("items");
         JSONArray item = (JSONArray) items.get("item");
 
-        List<CodeDto> codes = new ArrayList<>();
+        Map<String, CodeDto> codes = new HashMap<>();
+        //crno
 
         for(int i = 0; i < item.size(); i++){
             JSONObject obj = (JSONObject) item.get(i);
@@ -59,10 +62,10 @@ public class CodeAPI {
             codeDto.setSrtnCd((String)obj.get("srtnCd"));
             codeDto.setItmsNm((String)obj.get("itmsNm"));
             codeDto.setCrno((String)obj.get("crno"));
-            if(codes.contains(codeDto)){
+            if(codes.containsKey(codeDto.getCrno())){
                 break;
             }
-            codes.add(codeDto);
+            codes.put(codeDto.getCrno(), codeDto);
         }
 
         return codes;
