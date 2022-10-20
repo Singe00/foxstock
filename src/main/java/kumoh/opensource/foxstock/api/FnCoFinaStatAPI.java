@@ -2,10 +2,12 @@ package kumoh.opensource.foxstock.api;
 
 import kumoh.opensource.foxstock.api.dto.FinaStatDto;
 import kumoh.opensource.foxstock.api.dto.FnCoFinaStatDto;
+import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -18,6 +20,8 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
+@Slf4j
+@Component
 public class FnCoFinaStatAPI {
     private static final String apiKey = ConstServiceKey.FNCO_FINA_STAT_SERVICE_KEY;
     private static final String url = "http://apis.data.go.kr/1160100/service/GetFnCoFinaStatCredInfoService/getFnCoSummFinaStat";

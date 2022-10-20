@@ -2,10 +2,12 @@ package kumoh.opensource.foxstock.api;
 
 import kumoh.opensource.foxstock.api.dto.CodeDto;
 import kumoh.opensource.foxstock.api.dto.PriceDto;
+import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -17,6 +19,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
+@Slf4j
+@Component
 public class PriceAPI {
     private static final String apiKey = ConstServiceKey.PRICE_SERVICE_KEY;
     private static final String url = "http://apis.data.go.kr/1160100/service/GetStockSecuritiesInfoService/getStockPriceInfo";
