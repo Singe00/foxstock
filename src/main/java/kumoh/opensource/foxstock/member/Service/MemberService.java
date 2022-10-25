@@ -14,7 +14,7 @@ import java.util.Optional;
 @Slf4j
 @RequiredArgsConstructor
 public class MemberService {
-
+    @Autowired
     private final MemberRepository memberRepository;
 
     public String signup(MemberDto request){
