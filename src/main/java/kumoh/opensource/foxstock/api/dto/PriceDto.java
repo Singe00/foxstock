@@ -7,5 +7,6 @@ import lombok.Data;
 public class PriceDto {
     String srtnCd;
     String clpr;
+    String lstgStCnt;
 
 }
