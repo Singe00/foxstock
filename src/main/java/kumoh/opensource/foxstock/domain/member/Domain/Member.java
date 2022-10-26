@@ -1,4 +1,4 @@
-package kumoh.opensource.foxstock.member.Domain;
+package kumoh.opensource.foxstock.domain.member.Domain;
 
 import lombok.*;
 

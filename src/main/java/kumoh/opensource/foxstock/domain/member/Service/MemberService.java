@@ -1,8 +1,8 @@
-package kumoh.opensource.foxstock.member.Service;
+package kumoh.opensource.foxstock.domain.member.Service;
 
-import kumoh.opensource.foxstock.member.Domain.Member;
-import kumoh.opensource.foxstock.member.Dto.MemberDto;
-import kumoh.opensource.foxstock.member.Repository.MemberRepository;
+import kumoh.opensource.foxstock.domain.member.Domain.Member;
+import kumoh.opensource.foxstock.domain.member.Dto.MemberDto;
+import kumoh.opensource.foxstock.domain.member.Repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,6 @@
-package kumoh.opensource.foxstock.member.Repository;
+package kumoh.opensource.foxstock.domain.member.Repository;
 
-import kumoh.opensource.foxstock.member.Domain.Member;
+import kumoh.opensource.foxstock.domain.member.Domain.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

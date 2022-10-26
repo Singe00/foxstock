@@ -1,4 +1,4 @@
-package kumoh.opensource.foxstock.member;
+package kumoh.opensource.foxstock.domain.member;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

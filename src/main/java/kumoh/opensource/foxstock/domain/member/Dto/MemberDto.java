@@ -1,4 +1,4 @@
-package kumoh.opensource.foxstock.member.Dto;
+package kumoh.opensource.foxstock.domain.member.Dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
