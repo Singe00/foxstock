@@ -4,3 +4,5 @@ create table user(
     password varchar(32),
     primary key (id)
 );
+
+
