@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Table
+@Table(name = "user")
 @Getter
 @Setter
 @Entity
@@ -14,13 +14,14 @@ import javax.persistence.*;
 public class Member {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
-    @Column(unique = true)
+    @Column(name = "user_id", unique = true)
     private String userId;
 
-    @Column(nullable = false)
+    @Column(name = "password", nullable = false)
     private String password;
 
 }

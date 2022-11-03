@@ -31,7 +31,7 @@ public class MemberController {
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody MemberDto request) {
         log.info("userId = {}, password = {}", request.getUserId(), request.getPassword());
-        if(memberService.login(request.getUserId(),request.getPassword()).equals("Success")) {
+        if(memberService.login(request).equals("Success")) {
             return new ResponseEntity(HttpStatus.CREATED);
         }
         return new ResponseEntity(HttpStatus.BAD_REQUEST);
