@@ -1,5 +1,6 @@
 package kumoh.opensource.foxstock.domain.member.Controller;
 
+import kumoh.opensource.foxstock.domain.member.Dto.FindUserIdDto;
 import kumoh.opensource.foxstock.domain.member.Dto.MemberDto;
 import kumoh.opensource.foxstock.domain.member.Service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
@@ -21,7 +23,8 @@ public class MemberController {
 
     @PostMapping("/signup")
     public ResponseEntity signup(@RequestBody MemberDto request) {
-        log.info("userId = {}, password = {}", request.getUserId(), request.getPassword());
+        log.info("userName = {}, userId = {}, password = {}, userCheckQuestionNumber = {}, userCheckQuestionAnswer = {}"
+                ,request.getUserName(), request.getUserId(), request.getPassword(),request.getUserCheckQuestionNumber(),request.getUserCheckQuestionAnswer());
         if(memberService.signup(request).equals("Success")) {
             return new ResponseEntity(HttpStatus.CREATED);
         }
@@ -35,5 +38,18 @@ public class MemberController {
             return new ResponseEntity(HttpStatus.CREATED);
         }
         return new ResponseEntity(HttpStatus.BAD_REQUEST);
+    }
+
+    @PostMapping("/findUserID")
+    @ResponseBody
+    public String findUserId(@RequestBody FindUserIdDto request) {
+        log.info("userName = {}, userCheckQuestionNumber={}, userCheckQuestionAnswer={}",
+                request.getUserName(),request.getUserCheckQuestionNumber(),request.getUserCheckQuestionAnswer());
+        String result = memberService.findUserId(request);
+        if (result.equals("Fail"))
+        {
+            return "입력 정보를 찾을 수 없습니다.";
+        }
+        return result;
     }
 }

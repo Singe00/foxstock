@@ -18,10 +18,18 @@ public class Member {
     @Column(name = "id")
     private Long id;
 
+    @Column(name = "user_name",nullable = false)
+    private String userName;
+
     @Column(name = "user_id", unique = true)
     private String userId;
 
     @Column(name = "password", nullable = false)
     private String password;
 
+    @Column(name = "user_check_question_number",nullable = false)
+    private int userCheckQuestionNumber;
+
+    @Column(name = "user_check_question_answer",nullable = false)
+    private String userCheckQuestionAnswer;
 }

@@ -1,6 +1,7 @@
 package kumoh.opensource.foxstock.domain.member.Service;
 
 import kumoh.opensource.foxstock.domain.member.Domain.Member;
+import kumoh.opensource.foxstock.domain.member.Dto.FindUserIdDto;
 import kumoh.opensource.foxstock.domain.member.Dto.MemberDto;
 import kumoh.opensource.foxstock.domain.member.Repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,8 +26,11 @@ public class MemberService {
                         });
 
         member.setId(null);
+        member.setUserName(request.getUserName());
         member.setUserId(request.getUserId());
         member.setPassword(request.getPassword());
+        member.setUserCheckQuestionNumber(request.getUserCheckQuestionNumber());
+        member.setUserCheckQuestionAnswer(request.getUserCheckQuestionAnswer());
 
         memberRepository.save(member);
 
@@ -47,6 +51,28 @@ public class MemberService {
         }
         else {
             throw new IllegalStateException("존재하지 않는 아이디입니다.");
+        }
+    }
+
+    public String findUserId(FindUserIdDto request) {
+        if (memberRepository.findByUserName(request.getUserName()).isPresent()) {
+            Optional<Member> member = memberRepository.findByUserName(request.getUserName());
+            if (member.get().getUserCheckQuestionNumber() == request.getUserCheckQuestionNumber()) {
+                if (member.get().getUserCheckQuestionAnswer().equals(request.getUserCheckQuestionAnswer())) {
+                    log.info("GOOOODDDDD");
+                    return member.get().getUserId();
+                }
+                else {
+                    log.info("FAILLLLLLL");
+                    return "Fail";
+                }
+            } else {
+                log.info("FAILLLLLLL");
+                return "Fail";
+            }
+        } else {
+            log.info("FAILLLLLLL");
+            return "Fail";
         }
     }
 }
