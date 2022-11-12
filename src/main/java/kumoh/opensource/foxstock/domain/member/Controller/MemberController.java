@@ -21,7 +21,7 @@ public class MemberController {
     @Autowired
     private final MemberService memberService;
 
-    @PostMapping("/signup")
+    @PostMapping("/signUp")
     public ResponseEntity signup(@RequestBody MemberDto request) {
         log.info("userName = {}, userId = {}, password = {}, userCheckQuestionNumber = {}, userCheckQuestionAnswer = {}"
                 ,request.getName(), request.getEmail(), request.getPassword(),request.getUserCheckQuestionNumber(),request.getUserCheckQuestionAnswer());

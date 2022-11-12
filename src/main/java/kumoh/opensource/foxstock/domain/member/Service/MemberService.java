@@ -20,7 +20,7 @@ public class MemberService {
 
     Member member = new Member();
     public String signup(MemberDto request){
-        memberRepository.findByUserId(request.getEmail())
+        memberRepository.findByEmail(request.getEmail())
                         .ifPresent(m->{
                             throw new IllegalStateException("이미 존재하는 아이디입니다.");
                         });
@@ -43,9 +43,9 @@ public class MemberService {
     }
 
     public String login(MemberDto request) {
-        if (memberRepository.findByUserId(request.getEmail()).isPresent())
+        if (memberRepository.findByEmail(request.getEmail()).isPresent())
         {
-            Optional<Member> member = memberRepository.findByUserId(request.getEmail());
+            Optional<Member> member = memberRepository.findByEmail(request.getEmail());
             log.info("db password = {}, input password = {}",member.get().getPassword(),request.getPassword());
             if (member.get().getPassword().equals(request.getPassword())) {
                 return "Success";
@@ -60,8 +60,8 @@ public class MemberService {
     }
 
     public String findUserId(FindUserIdDto request) {
-        if (memberRepository.findByUserName(request.getName()).isPresent()) {
-            Optional<Member> member = memberRepository.findByUserName(request.getName());
+        if (memberRepository.findByName(request.getName()).isPresent()) {
+            Optional<Member> member = memberRepository.findByName(request.getName());
             if (member.get().getUserCheckQuestionNumber() == request.getUserCheckQuestionNumber()) {
                 if (member.get().getUserCheckQuestionAnswer().equals(request.getUserCheckQuestionAnswer())) {
                     log.info("GOOOODDDDD");
