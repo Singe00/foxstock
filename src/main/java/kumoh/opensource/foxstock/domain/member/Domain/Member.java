@@ -19,10 +19,10 @@ public class Member {
     private Long id;
 
     @Column(name = "user_name",nullable = false)
-    private String userName;
+    private String name;
 
     @Column(name = "user_id", unique = true)
-    private String userId;
+    private String email;
 
     @Column(name = "password", nullable = false)
     private String password;

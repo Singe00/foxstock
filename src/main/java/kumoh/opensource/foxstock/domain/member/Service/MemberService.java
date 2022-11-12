@@ -20,27 +20,32 @@ public class MemberService {
 
     Member member = new Member();
     public String signup(MemberDto request){
-        memberRepository.findByUserId(request.getUserId())
+        memberRepository.findByUserId(request.getEmail())
                         .ifPresent(m->{
                             throw new IllegalStateException("이미 존재하는 아이디입니다.");
                         });
+        if (request.getPassword().equals(request.getSetCheckPassword()))
+        {
+            member.setId(null);
+            member.setName(request.getName());
+            member.setEmail(request.getEmail());
+            member.setPassword(request.getPassword());
+            member.setUserCheckQuestionNumber(request.getUserCheckQuestionNumber());
+            member.setUserCheckQuestionAnswer(request.getUserCheckQuestionAnswer());
 
-        member.setId(null);
-        member.setUserName(request.getUserName());
-        member.setUserId(request.getUserId());
-        member.setPassword(request.getPassword());
-        member.setUserCheckQuestionNumber(request.getUserCheckQuestionNumber());
-        member.setUserCheckQuestionAnswer(request.getUserCheckQuestionAnswer());
+            memberRepository.save(member);
 
-        memberRepository.save(member);
-
-        return "Success";
+            return "Success";
+        }
+        else {
+            throw new IllegalStateException("비밀번호를 확인해주세요.");
+        }
     }
 
     public String login(MemberDto request) {
-        if (memberRepository.findByUserId(request.getUserId()).isPresent())
+        if (memberRepository.findByUserId(request.getEmail()).isPresent())
         {
-            Optional<Member> member = memberRepository.findByUserId(request.getUserId());
+            Optional<Member> member = memberRepository.findByUserId(request.getEmail());
             log.info("db password = {}, input password = {}",member.get().getPassword(),request.getPassword());
             if (member.get().getPassword().equals(request.getPassword())) {
                 return "Success";
@@ -55,12 +60,12 @@ public class MemberService {
     }
 
     public String findUserId(FindUserIdDto request) {
-        if (memberRepository.findByUserName(request.getUserName()).isPresent()) {
-            Optional<Member> member = memberRepository.findByUserName(request.getUserName());
+        if (memberRepository.findByUserName(request.getName()).isPresent()) {
+            Optional<Member> member = memberRepository.findByUserName(request.getName());
             if (member.get().getUserCheckQuestionNumber() == request.getUserCheckQuestionNumber()) {
                 if (member.get().getUserCheckQuestionAnswer().equals(request.getUserCheckQuestionAnswer())) {
                     log.info("GOOOODDDDD");
-                    return member.get().getUserId();
+                    return member.get().getEmail();
                 }
                 else {
                     log.info("FAILLLLLLL");

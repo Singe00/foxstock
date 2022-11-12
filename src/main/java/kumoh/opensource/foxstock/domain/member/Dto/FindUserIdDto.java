@@ -10,7 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class FindUserIdDto {
-    private String userName;
+    private String name;
     private int userCheckQuestionNumber;
     private String userCheckQuestionAnswer;
 }

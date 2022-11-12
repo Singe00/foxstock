@@ -24,7 +24,7 @@ public class MemberController {
     @PostMapping("/signup")
     public ResponseEntity signup(@RequestBody MemberDto request) {
         log.info("userName = {}, userId = {}, password = {}, userCheckQuestionNumber = {}, userCheckQuestionAnswer = {}"
-                ,request.getUserName(), request.getUserId(), request.getPassword(),request.getUserCheckQuestionNumber(),request.getUserCheckQuestionAnswer());
+                ,request.getName(), request.getEmail(), request.getPassword(),request.getUserCheckQuestionNumber(),request.getUserCheckQuestionAnswer());
         if(memberService.signup(request).equals("Success")) {
             return new ResponseEntity(HttpStatus.CREATED);
         }
@@ -33,9 +33,12 @@ public class MemberController {
 
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody MemberDto request) {
-        log.info("userId = {}, password = {}", request.getUserId(), request.getPassword());
-        if(memberService.login(request).equals("Success")) {
-            return new ResponseEntity(HttpStatus.CREATED);
+        log.info("userId = {}, password = {}", request.getEmail(), request.getPassword());
+        if (request.getPassword().equals(request.getSetCheckPassword()))
+        {
+            if(memberService.login(request).equals("Success")) {
+                return new ResponseEntity(HttpStatus.CREATED);
+            }
         }
         return new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
@@ -44,7 +47,7 @@ public class MemberController {
     @ResponseBody
     public String findUserId(@RequestBody FindUserIdDto request) {
         log.info("userName = {}, userCheckQuestionNumber={}, userCheckQuestionAnswer={}",
-                request.getUserName(),request.getUserCheckQuestionNumber(),request.getUserCheckQuestionAnswer());
+                request.getName(),request.getUserCheckQuestionNumber(),request.getUserCheckQuestionAnswer());
         String result = memberService.findUserId(request);
         if (result.equals("Fail"))
         {

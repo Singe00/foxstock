@@ -10,9 +10,10 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MemberDto {
-    private String userName;
-    private String userId;
+    private String name;
+    private String email;
     private String password;
+    private String setCheckPassword;
     private int userCheckQuestionNumber;
     private String userCheckQuestionAnswer;
 }

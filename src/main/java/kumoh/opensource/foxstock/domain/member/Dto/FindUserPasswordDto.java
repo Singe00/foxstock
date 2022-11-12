@@ -10,7 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class FindUserPasswordDto {
-    private String userId;
+    private String email;
     private int userCheckQuestionNumber;
     private String userCheckQuestionAnswer;
 }
