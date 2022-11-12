@@ -17,9 +17,14 @@ public class Stock {
     String srtnCd;
     String crno;
     String name;
+    Integer currentPrice;
+    Long lstgStCnt;
+    Long capital;
+    Integer bps;
+    Double pbr;
+    Double averageRoe;
     Double expectedReturn;
     Integer purchasePrice;
-    int currentPrice;
-    long lstgStCnt;
+
 
 }

@@ -1,189 +1,193 @@
 package kumoh.opensource.foxstock.scheduler;
 
-import kumoh.opensource.foxstock.api.CodeAPI;
-import kumoh.opensource.foxstock.api.FinaStatAPI;
-import kumoh.opensource.foxstock.api.PriceAPI;
+import kumoh.opensource.foxstock.api.CodeApi;
+import kumoh.opensource.foxstock.api.FinaStatApi;
+import kumoh.opensource.foxstock.api.PriceApi;
 import kumoh.opensource.foxstock.api.dto.CodeDto;
 import kumoh.opensource.foxstock.api.dto.FinaStatDto;
 import kumoh.opensource.foxstock.api.dto.PriceDto;
 import kumoh.opensource.foxstock.domain.stock.domain.Stock;
 import kumoh.opensource.foxstock.domain.stock.repository.StockRepository;
 import lombok.RequiredArgsConstructor;
-import org.json.simple.parser.ParseException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class StockScheduler {
 
-    private final CodeAPI codeAPI;
-    private final FinaStatAPI finaStatAPI;
-    private final PriceAPI priceAPI;
+    private final CodeApi codeApi;
+    private final FinaStatApi finaStatApi;
+    private final PriceApi priceApi;
     private final StockRepository stockRepository;
 
-    //@Scheduled
-    public List<Stock> dailyUpdate() throws IOException, ParseException {
-        Map<String, PriceDto> prices = priceAPI.getAllPrice();
-
-        List<Stock> stocks = stockRepository.findAll();
-        stocks.forEach(stock -> {
-            String srtnCd = stock.getSrtnCd();
-
-            int currentPrice = Integer.parseInt(prices.get(srtnCd).getClpr());
-            long numberOfStock = Long.parseLong(prices.get(srtnCd).getLstgStCnt());
-
-            stock.setCurrentPrice(currentPrice);
-            stock.setLstgStCnt(numberOfStock);
-        });
-        return stocks;
-    }
 
     //@Scheduled
-    public List<Stock> yearlyUpdate() throws IOException, ParseException {
-        Map<String, CodeDto> codes = codeAPI.getAllCode();
+//    public List<Stock> dailyUpdate(){
+//        List<PriceDto> prices = priceApi.getPriceBySrtnCd()
+//
+//        List<Stock> stocks = stockRepository.findAll();
+//        stocks.forEach(stock -> {
+//            String srtnCd = stock.getSrtnCd();
+//
+//            int currentPrice = Integer.parseInt(prices.get(srtnCd).getClpr());
+//            long numberOfStock = Long.parseLong(prices.get(srtnCd).getLstgStCnt());
+//
+//            stock.setCurrentPrice(currentPrice);
+//            stock.setLstgStCnt(numberOfStock);
+//        });
+//        return stocks;
+//    }
+
+    //@Scheduled
+    public List<Stock> yearlyUpdate(){
+        codeApi.saveAllCode();;
+        priceApi.saveAllPrice();
+        finaStatApi.saveAllFinaStatDto();
+
+        List<CodeDto> codeDtos = codeApi.getAllCode();
         //crno
-        Map<String, PriceDto> prices = priceAPI.getAllPrice();
-        //srtnCd
-        Map<String, Map<String, FinaStatDto>> finaStats = finaStatAPI.getAllFinaStat();
-        //bizYear       //crno
 
-
-        List<CodeDto> codeDtos = codes.values().stream().toList();
         List<Stock> stocks = new ArrayList<>();
 
         codeDtos.forEach(codeDto -> {
-            String srtnCd = codeDto.getSrtnCd();
-            String itmsNm = codeDto.getItmsNm();
-            String crno = codeDto.getCrno();
-
             Stock stock = new Stock();
-            stock.setSrtnCd(srtnCd);
-            stock.setName(itmsNm);
-            stock.setCrno(crno);
+
+            stock.setSrtnCd( codeDto.getSrtnCd() );
+            stock.setName( codeDto.getItmsNm() );
+            stock.setCrno( codeDto.getCrno() );
 
             stocks.add(stock);
         });
 
         stocks.forEach(stock -> {
-            PriceDto priceDto = prices.get(stock.getSrtnCd());
-            int currentPrice = Integer.parseInt(priceDto.getClpr());
-            long numberOfStock =  Long.parseLong(priceDto.getLstgStCnt());
-            Double expectedReturn = calculateExpectedReturn(stock, finaStats);
-            Integer purchasePrice = calculatePurchasePrice(stock, finaStats);
+            String srtnCd = stock.getSrtnCd();
+            PriceDto priceDto = priceApi.getPriceBySrtnCd(srtnCd);
 
-
-            stock.setCurrentPrice(currentPrice);
-            stock.setLstgStCnt(numberOfStock);
-            stock.setExpectedReturn(expectedReturn);
-            stock.setPurchasePrice(purchasePrice);
+            stock.setCurrentPrice(Integer.parseInt(priceDto.getClpr()));
+            stock.setLstgStCnt(Long.parseLong(priceDto.getLstgStCnt()));
 
         });
 
+        stocks.forEach(stock -> {
+            String crno = stock.getCrno();
+            List<FinaStatDto> finaStatByCrno = finaStatApi.getFinaStatByCrno(crno);
+            log.info("finaStatByCrno = {}",finaStatByCrno);
+
+            setFirstCapital(stock,finaStatByCrno);
+            setBps(stock);
+            setPbr(stock);
+            setAverageRoe(stock, finaStatByCrno);
+            setExpectedReturn(stock);
+            setPurchasePrice(stock);
+        });
+
+
+        stockRepository.saveAll(stocks);
         return stocks;
 
     }
 
-    public Stock oneUpdateByItmsNm(String itmsNm) throws ParseException, IOException {
-        Map<String, CodeDto> code = codeAPI.getCodeByItmsNm(itmsNm);
-        CodeDto codeDto = code.values().stream().findFirst().get();
+    private void setFirstCapital(Stock stock, List<FinaStatDto> finaStatDtos) {
+        int currentYear = LocalDate.now().getYear();
+        String firstYear = Integer.toString(currentYear-1);
 
-        Map<String, Map<String, FinaStatDto>> finaStatByCrno = finaStatAPI.getFinaStatByCrno(codeDto.getCrno());
+        Optional<FinaStatDto> firstFinaStat = finaStatDtos.stream()
+                .filter(finaStatDto -> finaStatDto.getBizYear().equals(firstYear))
+                .filter(finaStatDto -> finaStatDto.getFnclDcdNm().contains("연결"))
+                .findFirst();
 
-        Map<String, PriceDto> priceByItmsNm = priceAPI.getPriceByItmsNm(itmsNm);
-        PriceDto priceDto = priceByItmsNm.values().stream().findFirst().get();
+        if(firstFinaStat.isEmpty()){
+            firstFinaStat = finaStatDtos.stream()
+                    .filter(finaStatDto -> finaStatDto.getBizYear().equals(firstYear))
+                    .filter(finaStatDto -> finaStatDto.getFnclDcdNm().contains("별도"))
+                    .findFirst();
+        }
 
-        String srtnCd = codeDto.getSrtnCd();
-        String name = codeDto.getItmsNm();
-        String crno = codeDto.getCrno();
+        Long firstCapital = firstFinaStat.map(finaStatDto -> Long.parseLong(finaStatDto.getEnpTcptAmt())).orElse(-1L);
 
-        Stock stock = new Stock();
-        stock.setSrtnCd(srtnCd);
-        stock.setName(name);
-        stock.setCrno(crno);
-        stock.setCurrentPrice(Integer.parseInt(priceDto.getClpr()));
-        stock.setLstgStCnt(Long.parseLong(priceDto.getLstgStCnt()));
-        stock.setExpectedReturn(calculateExpectedReturn(stock, finaStatByCrno));
-        stock.setPurchasePrice(calculatePurchasePrice(stock,finaStatByCrno));
+        stock.setCapital(firstCapital);
+    }
 
-        return stock;
+    private void setBps(Stock stock) {
+        stock.setBps((int)(stock.getCapital() / stock.getLstgStCnt()));
+    }
+
+    private void setPbr(Stock stock) {
+        Double pbr = (double) stock.getCurrentPrice() / stock.getBps();
+        if(pbr.isInfinite()){
+            stock.setPbr(-1.0);
+        }
+        else{
+            stock.setPbr(pbr);
+        }
+
     }
 
 
+    private void setAverageRoe(Stock stock, List<FinaStatDto> finaStatDtos){
+        int currentYear = LocalDate.now().getYear();
+        String firstYear = Integer.toString(currentYear-1);
+        String secondYear = Integer.toString(currentYear-2);
+        String thirdYear = Integer.toString(currentYear-3);
 
-    private Double calculateExpectedReturn(Stock stock, Map<String, Map<String, FinaStatDto>> finaStats){
-        String crno = stock.getCrno();
-        Map<String, FinaStatDto> firstYear = finaStats.get("firstYear");
-        Optional<FinaStatDto> finaStatDto = Optional.ofNullable(firstYear.get(crno));
-        if(finaStatDto.isEmpty()){
-            return null;
+        List<FinaStatDto> finaStats = finaStatDtos.stream()
+                .filter(finaStatDto -> finaStatDto.getFnclDcdNm().contains("연결")).toList();
+
+        if(finaStats.isEmpty()){
+            finaStats = finaStatDtos.stream()
+                    .filter(finaStatDto -> finaStatDto.getFnclDcdNm().contains("별도")).toList();
         }
 
-        long firstCapital = Long.parseLong(finaStatDto.get().getEnpTcptAmt());
-        Double averageRoe = calculateAverageRoe(stock, finaStats);
-        if(averageRoe == null){
-            return null;
-        }
-        double pbr = (double)stock.getCurrentPrice() * stock.getLstgStCnt() / firstCapital; // 시가총액 / 자본
+        Optional<FinaStatDto> firstFinaStat = finaStats.stream()
+                .filter(finaStatDto -> finaStatDto.getBizYear().equals(firstYear)).findFirst();
+        Optional<FinaStatDto> secondFinaStat = finaStats.stream()
+                .filter(finaStatDto -> finaStatDto.getBizYear().equals(secondYear)).findFirst();
+        Optional<FinaStatDto> thirdFinaStat = finaStats.stream()
+                .filter(finaStatDto -> finaStatDto.getBizYear().equals(thirdYear)).findFirst();
 
-        return averageRoe / Math.pow(pbr, 0.1 );
-    }
-
-    private Integer calculatePurchasePrice(Stock stock, Map<String, Map<String, FinaStatDto>> finaStats){
-        String crno = stock.getCrno();
-        Map<String, FinaStatDto> firstYear = finaStats.get("firstYear");
-        Optional<FinaStatDto> finaStatDto = Optional.ofNullable(firstYear.get(crno));
-        if(finaStatDto.isEmpty()){
-            return null;
-        }
-        long firstCapital = Long.parseLong(finaStatDto.get().getEnpTcptAmt());
-        Double averageRoe = calculateAverageRoe(stock, finaStats);
-        if(averageRoe == null){
-            return null;
-        }
-
-        if(stock.getLstgStCnt() == 0){
-            return null;
-        }
-        long bps = firstCapital / stock.getLstgStCnt(); // 자본/주식수
-
-        return (int)(bps * Math.pow(averageRoe, 10) / Math.pow(1.15, 10));
-    }
-
-    private Double calculateAverageRoe(Stock stock, Map<String, Map<String, FinaStatDto>> finaStats){
-        Map<String, FinaStatDto> firstYear = finaStats.get("firstYear");
-        Map<String, FinaStatDto> secondYear = finaStats.get("secondYear");
-        Map<String, FinaStatDto> thirdYear = finaStats.get("thirdYear");
 
         String crno = stock.getCrno();
 
-        Optional<FinaStatDto> firstFinaDto = Optional.ofNullable(firstYear.get(crno));
-        Optional<FinaStatDto> secondFinaDto = Optional.ofNullable(secondYear.get(crno));
-        Optional<FinaStatDto> thirdFinaDto = Optional.ofNullable(thirdYear.get(crno));
 
-        if(firstFinaDto.isEmpty() || secondFinaDto.isEmpty() || thirdFinaDto.isEmpty()){
-            return null;
-        }
+        long firstCapital = Long.parseLong(firstFinaStat.map(FinaStatDto::getEnpTcptAmt).orElse("-1"));
+        long secondCapital = Long.parseLong(secondFinaStat.map(FinaStatDto::getEnpTcptAmt).orElse("-1"));
+        long thirdCapital = Long.parseLong(thirdFinaStat.map(FinaStatDto::getEnpTcptAmt).orElse("-1"));
 
-        long firstCapital = Long.parseLong(firstFinaDto.get().getEnpTcptAmt());
-        long secondCapital = Long.parseLong(secondFinaDto.get().getEnpTcptAmt());
-        long thirdCapital = Long.parseLong(thirdFinaDto.get().getEnpTcptAmt());
-
-        long firstProfit = Long.parseLong(firstFinaDto.get().getEnpCrtmNpf());
-        long secondProfit = Long.parseLong(secondFinaDto.get().getEnpCrtmNpf());
-        long thirdProfit = Long.parseLong(thirdFinaDto.get().getEnpCrtmNpf());
+        long firstProfit = Long.parseLong(firstFinaStat.map(FinaStatDto::getEnpCrtmNpf).orElse("0"));
+        long secondProfit = Long.parseLong(secondFinaStat.map(FinaStatDto::getEnpCrtmNpf).orElse("0"));
+        long thirdProfit = Long.parseLong(thirdFinaStat.map(FinaStatDto::getEnpCrtmNpf).orElse("0"));
 
         double firstRoe = (double)firstProfit/firstCapital;
         double secondRoe = (double)secondProfit/secondCapital;
         double thirdRoe = (double)thirdProfit/thirdCapital;
 
-        return (firstRoe + secondRoe + thirdRoe) / 3 + 1;
+        stock.setAverageRoe((firstRoe + secondRoe + thirdRoe) / 3 + 1);
+
+    }
+
+    private void setExpectedReturn(Stock stock){
+        Double expectedReturn = stock.getAverageRoe() / Math.pow(stock.getPbr(), 0.1 );
+
+        if(expectedReturn.isNaN()){
+            stock.setExpectedReturn(0.0);
+        }
+        else{
+            stock.setExpectedReturn(expectedReturn);
+        }
+    }
+
+    private void setPurchasePrice(Stock stock){
+        stock.setPurchasePrice((int)(stock.getBps() * Math.pow(stock.getAverageRoe(), 10) / Math.pow(1.15, 10)));
     }
 
 }
