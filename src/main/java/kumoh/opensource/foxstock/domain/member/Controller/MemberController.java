@@ -8,14 +8,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor
+@CrossOrigin
 public class MemberController {
 
     @Autowired
@@ -34,16 +32,15 @@ public class MemberController {
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody MemberDto request) {
         log.info("userId = {}, password = {}", request.getEmail(), request.getPassword());
-        if (request.getPassword().equals(request.getSetCheckPassword()))
-        {
-            if(memberService.login(request).equals("Success")) {
-                return new ResponseEntity(HttpStatus.CREATED);
-            }
+
+        if(memberService.login(request).equals("Success")) {
+            return new ResponseEntity(HttpStatus.CREATED);
         }
+
         return new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
 
-    @PostMapping("/findUserID")
+    @PostMapping("/findUserId")
     @ResponseBody
     public String findUserId(@RequestBody FindUserIdDto request) {
         log.info("userName = {}, userCheckQuestionNumber={}, userCheckQuestionAnswer={}",

@@ -30,8 +30,8 @@ public class MemberService {
             member.setName(request.getName());
             member.setEmail(request.getEmail());
             member.setPassword(request.getPassword());
-            member.setUserCheckQuestionNumber(request.getUserCheckQuestionNumber());
-            member.setUserCheckQuestionAnswer(request.getUserCheckQuestionAnswer());
+            member.setUserCheckQuestionNumber(1);
+            member.setUserCheckQuestionAnswer("asdas");
 
             memberRepository.save(member);
 
