@@ -17,5 +17,6 @@ public class PriceDto {
     String srtnCd; //종목코드
     String clpr; //현재가격
     String lstgStCnt; // 주식수
+    String mrktCtg; //KOPSI.KOSDAQ
 
 }

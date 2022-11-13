@@ -26,7 +26,7 @@ public class PriceApi {
     }
 
     public void saveAllPrice(){
-        String result = apiRequestFormat.request(url,apiKey,null);
+        String result = apiRequestFormat.request(url,apiKey,null,null);
 
         List<PriceDto> priceDtos = apiParsingFormat.priceParsing(result);
 

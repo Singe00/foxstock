@@ -18,7 +18,7 @@ class StockRepositoryTest {
 
     @Test
     void repoTest(){
-        Stock stock = new Stock("111", "222", "test", 10_000, 10_000_000L, 10_000L, 8000, 1.2, 1.16, 1.1, 10000);
+        Stock stock = new Stock("111", "222", "test", 10_000,"KOSPI", 10_000_000L, 10_000L, 8000, 1.2, 1.16, 1.1, 10000);
 
         stockRepository.save(stock);
         Stock findStock = stockRepository.findById(stock.getSrtnCd()).get();

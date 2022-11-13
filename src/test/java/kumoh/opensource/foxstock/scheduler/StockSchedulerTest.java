@@ -21,4 +21,14 @@ class StockSchedulerTest {
         List<Stock> stocks = stockScheduler.yearlyUpdate();
     }
 
+    @Test
+    void supUpdate(){
+        stockScheduler.subUpdate();
+    }
+
+    @Test
+    void dailyUpdate(){
+        stockScheduler.dailyUpdate();
+    }
+
 }

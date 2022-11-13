@@ -18,6 +18,7 @@ public class Stock {
     String crno;
     String name;
     Integer currentPrice;
+    String mrktCtg;
     Long lstgStCnt;
     Long capital;
     Integer bps;
@@ -25,6 +26,5 @@ public class Stock {
     Double averageRoe;
     Double expectedReturn;
     Integer purchasePrice;
-
 
 }

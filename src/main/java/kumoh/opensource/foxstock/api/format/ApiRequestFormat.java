@@ -14,34 +14,32 @@ import java.nio.charset.StandardCharsets;
 @Component
 public class ApiRequestFormat {
 
-    public String request(String endUrl, String apiKey, @Nullable String bizYear){
+    public String request(String endUrl, String apiKey, @Nullable String bizYear, @Nullable String crno){
         StringBuilder urlBuilder = new StringBuilder(endUrl);
         urlBuilder.append("?" + URLEncoder.encode("serviceKey", StandardCharsets.UTF_8) + "=" + apiKey );
         urlBuilder.append("&" + URLEncoder.encode("numOfRows", StandardCharsets.UTF_8) + "=" + URLEncoder.encode("10000",StandardCharsets.UTF_8));
         urlBuilder.append("&" + URLEncoder.encode("pageNo", StandardCharsets.UTF_8) + "=" + URLEncoder.encode("1",StandardCharsets.UTF_8));
         urlBuilder.append("&" + URLEncoder.encode("resultType", StandardCharsets.UTF_8) + "=" + URLEncoder.encode("json",StandardCharsets.UTF_8));
+
         if(bizYear != null){
             urlBuilder.append("&" + URLEncoder.encode("bizYear", StandardCharsets.UTF_8) + "=" + URLEncoder.encode(bizYear,StandardCharsets.UTF_8));
         }
-
+        if(crno != null){
+            urlBuilder.append("&" + URLEncoder.encode("crno", StandardCharsets.UTF_8) + "=" + URLEncoder.encode(crno,StandardCharsets.UTF_8));
+        }
 
         HttpURLConnection con = null;
-        BufferedReader rd;
 
         try{
             URL url = new URL(urlBuilder.toString());
             con = (HttpURLConnection) url.openConnection();
-
+            con.setConnectTimeout(60000);
             con.setRequestMethod("GET");
             con.setRequestProperty("Content-type","application/json");
 
-            rd = new BufferedReader(new InputStreamReader(con.getInputStream(), StandardCharsets.UTF_8));
+            BufferedReader rd = new BufferedReader(new InputStreamReader(con.getInputStream(), StandardCharsets.UTF_8));
 
-            String result = null;
-
-            if(rd.ready()){
-                result = rd.readLine();
-            }
+            String result = rd.readLine();
 
             rd.close();
 
@@ -51,6 +49,7 @@ public class ApiRequestFormat {
             if(con != null){
                 con.disconnect();
             }
+
             throw new RuntimeException(e);
         }
     }

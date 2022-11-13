@@ -9,6 +9,7 @@ import java.util.Optional;
 
 public interface FinaStatRepository extends JpaRepository<FinaStatDto, Integer> {
     List<FinaStatDto> findAllByCrno(String crno);
+
     @Transactional
     void deleteAllByEnpTcptAmt(String enpTcptAmt);
 

@@ -76,6 +76,7 @@ public class ApiParsingFormat {
             priceDto.setSrtnCd((String) obj.get("srtnCd"));
             priceDto.setClpr((String) obj.get("clpr"));
             priceDto.setLstgStCnt((String) obj.get("lstgStCnt"));
+            priceDto.setMrktCtg((String) obj.get("mrktCtg"));
 
             priceDtos.add(priceDto);
         }

@@ -25,26 +25,33 @@ public class FinaStatApi {
     private final FinaStatRepository finaStatRepository;
 
 
+    public void deleteAllFinaStatDto(){
+        finaStatRepository.deleteAll();
+    }
+
     public List<FinaStatDto> getFinaStatByCrno(String crno){
 
         return finaStatRepository.findAllByCrno(crno);
     }
 
-
-    public void saveAllFinaStatDto(){
+    public void saveFinaStatDtoByCrno(String crno){
         int nowYear = LocalDate.now().getYear();
         String firstYear = Integer.toString(nowYear-1);
         String secondYear = Integer.toString(nowYear-2);
         String thirdYear = Integer.toString(nowYear-3);
 
-        saveFinaStatByBizYear(firstYear);
-        saveFinaStatByBizYear(secondYear);
-        saveFinaStatByBizYear(thirdYear);
+        saveFinaStatByBizYearAndCrno(firstYear, crno);
+        saveFinaStatByBizYearAndCrno(secondYear, crno);
+        saveFinaStatByBizYearAndCrno(thirdYear, crno);
     }
 
-    private void saveFinaStatByBizYear(String bizYear){
-        finaStatRepository.deleteAll();
-        String request = apiRequestFormat.request(url,apiKey, bizYear);
+    private void saveFinaStatByBizYearAndCrno(String bizYear, String crno){
+        String request = apiRequestFormat.request(url,apiKey, bizYear,crno);
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
 
         List<FinaStatDto> finaStatDtos = apiParsingFormat.finaStatParsing(request);
 

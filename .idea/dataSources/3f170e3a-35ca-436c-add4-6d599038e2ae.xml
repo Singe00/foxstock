@@ -1137,6 +1137,7 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
     </column>
     <index id="308" parent="299" name="PRIMARY">
       <ColNames>srtn_cd</ColNames>
+      <NameSurrogate>1</NameSurrogate>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
@@ -1146,7 +1147,7 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
     <column id="310" parent="300" name="id">
-      <AutoIncrement>400001</AutoIncrement>
+      <AutoIncrement>699475</AutoIncrement>
       <DataType>int|0s</DataType>
       <NotNull>1</NotNull>
       <Position>1</Position>
@@ -1173,6 +1174,7 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
     </column>
     <index id="316" parent="300" name="PRIMARY">
       <ColNames>id</ColNames>
+      <NameSurrogate>1</NameSurrogate>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
@@ -1236,103 +1238,114 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
       <DataType>varchar(64)|0s</DataType>
       <Position>3</Position>
     </column>
-    <index id="330" parent="302" name="PRIMARY">
+    <column id="330" parent="302" name="mrkt_ctg">
+      <DataType>varchar(16)|0s</DataType>
+      <Position>4</Position>
+    </column>
+    <index id="331" parent="302" name="PRIMARY">
       <ColNames>srtn_cd</ColNames>
+      <NameSurrogate>1</NameSurrogate>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="331" parent="302" name="PRIMARY">
+    <key id="332" parent="302" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="332" parent="303" name="srtn_cd">
+    <column id="333" parent="303" name="srtn_cd">
       <DataType>varchar(32)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="333" parent="303" name="crno">
+    <column id="334" parent="303" name="crno">
       <DataType>varchar(32)|0s</DataType>
       <Position>2</Position>
     </column>
-    <column id="334" parent="303" name="name">
+    <column id="335" parent="303" name="name">
       <DataType>varchar(32)|0s</DataType>
       <Position>3</Position>
     </column>
-    <column id="335" parent="303" name="current_price">
+    <column id="336" parent="303" name="current_price">
       <DataType>int|0s</DataType>
       <Position>4</Position>
     </column>
-    <column id="336" parent="303" name="lstg_st_cnt">
+    <column id="337" parent="303" name="lstg_st_cnt">
       <DataType>mediumtext|0s</DataType>
       <Position>5</Position>
     </column>
-    <column id="337" parent="303" name="capital">
+    <column id="338" parent="303" name="capital">
       <DataType>mediumtext|0s</DataType>
       <Position>6</Position>
     </column>
-    <column id="338" parent="303" name="bps">
+    <column id="339" parent="303" name="bps">
       <DataType>int|0s</DataType>
       <Position>7</Position>
     </column>
-    <column id="339" parent="303" name="pbr">
+    <column id="340" parent="303" name="pbr">
       <DataType>double|0s</DataType>
       <Position>8</Position>
     </column>
-    <column id="340" parent="303" name="average_roe">
+    <column id="341" parent="303" name="average_roe">
       <DataType>double|0s</DataType>
       <Position>9</Position>
     </column>
-    <column id="341" parent="303" name="expected_return">
+    <column id="342" parent="303" name="expected_return">
       <DataType>double|0s</DataType>
       <Position>10</Position>
     </column>
-    <column id="342" parent="303" name="purchase_price">
+    <column id="343" parent="303" name="purchase_price">
       <DataType>int|0s</DataType>
       <Position>11</Position>
     </column>
-    <index id="343" parent="303" name="PRIMARY">
+    <column id="344" parent="303" name="mrkt_ctg">
+      <DataType>varchar(16)|0s</DataType>
+      <Position>12</Position>
+    </column>
+    <index id="345" parent="303" name="PRIMARY">
       <ColNames>srtn_cd</ColNames>
+      <NameSurrogate>1</NameSurrogate>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="344" parent="303" name="PRIMARY">
+    <key id="346" parent="303" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="345" parent="304" name="id">
-      <AutoIncrement>2</AutoIncrement>
+    <column id="347" parent="304" name="id">
+      <AutoIncrement>29</AutoIncrement>
       <DataType>int|0s</DataType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="346" parent="304" name="user_name">
+    <column id="348" parent="304" name="user_name">
       <DataType>varchar(32)|0s</DataType>
       <Position>2</Position>
     </column>
-    <column id="347" parent="304" name="user_id">
+    <column id="349" parent="304" name="user_id">
       <DataType>varchar(32)|0s</DataType>
       <Position>3</Position>
     </column>
-    <column id="348" parent="304" name="password">
+    <column id="350" parent="304" name="password">
       <DataType>varchar(32)|0s</DataType>
       <Position>4</Position>
     </column>
-    <column id="349" parent="304" name="user_check_question_number">
+    <column id="351" parent="304" name="user_check_question_number">
       <DataType>int|0s</DataType>
       <Position>5</Position>
     </column>
-    <column id="350" parent="304" name="user_check_question_answer">
+    <column id="352" parent="304" name="user_check_question_answer">
       <DataType>varchar(32)|0s</DataType>
       <Position>6</Position>
     </column>
-    <index id="351" parent="304" name="PRIMARY">
+    <index id="353" parent="304" name="PRIMARY">
       <ColNames>id</ColNames>
+      <NameSurrogate>1</NameSurrogate>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="352" parent="304" name="PRIMARY">
+    <key id="354" parent="304" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>

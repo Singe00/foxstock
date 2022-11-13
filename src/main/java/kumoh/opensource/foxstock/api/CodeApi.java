@@ -34,7 +34,7 @@ public class CodeApi {
     }
 
     public void saveAllCode(){
-        String result = apiRequestFormat.request(url, apiKey, null);
+        String result = apiRequestFormat.request(url, apiKey, null, null);
         List<CodeDto> parsedResult = apiParsingFormat.codeParsing(result);
         codeDtoRepository.saveAll(parsedResult);
     }
