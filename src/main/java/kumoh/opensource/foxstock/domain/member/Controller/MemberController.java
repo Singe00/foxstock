@@ -75,13 +75,13 @@ public class MemberController {
 
     @PostMapping("/changePw")
     @ResponseBody
-    public String changePw(@RequestBody ChangePwDto request) {
+    public boolean changePw(@RequestBody ChangePwDto request) {
         String result = memberService.changeUserPw(request);
         if (result.equals("Success"))
         {
-            return result;
+            return true;
         }
-        return result;
+        return false;
     }
 
     @PostMapping("/addInterest")
