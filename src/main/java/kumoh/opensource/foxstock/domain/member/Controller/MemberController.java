@@ -1,7 +1,7 @@
 package kumoh.opensource.foxstock.domain.member.Controller;
 
-import kumoh.opensource.foxstock.domain.member.Dto.FindUserIdDto;
-import kumoh.opensource.foxstock.domain.member.Dto.MemberDto;
+import kumoh.opensource.foxstock.domain.member.Dto.*;
+import kumoh.opensource.foxstock.domain.member.Service.InterestService;
 import kumoh.opensource.foxstock.domain.member.Service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +18,9 @@ public class MemberController {
 
     @Autowired
     private final MemberService memberService;
+
+    @Autowired
+    private final InterestService interestService;
 
     @PostMapping("/signUp")
     public ResponseEntity signup(@RequestBody MemberDto request) {
@@ -40,7 +43,7 @@ public class MemberController {
         return new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
 
-    @PostMapping("/findUserId")
+    @PostMapping("/findId")
     @ResponseBody
     public String findUserId(@RequestBody FindUserIdDto request) {
         log.info("userName = {}, userCheckQuestionNumber={}, userCheckQuestionAnswer={}",
@@ -51,5 +54,52 @@ public class MemberController {
             return "입력 정보를 찾을 수 없습니다.";
         }
         return result;
+    }
+
+    @PostMapping("/findPw")
+    @ResponseBody
+    public String findUserPw(@RequestBody FindUserPasswordDto request) {
+        log.info("userEmail = {}, userCheckQuestionNumber={}, userCheckQuestionAnswer={}",
+                request.getEmail(),request.getUserCheckQuestionNumber(),request.getUserCheckQuestionAnswer());
+        String result = memberService.findUserPw(request);
+        if (result.equals("Fail"))
+        {
+            return "입력 정보를 찾을 수 없습니다.";
+        }
+        return result;
+    }
+
+    @PostMapping("/changePw")
+    @ResponseBody
+    public String changePw(@RequestBody ChangePwDto request) {
+        String result = memberService.changeUserPw(request);
+        if (result.equals("Success"))
+        {
+            return result;
+        }
+        return result;
+    }
+
+    @GetMapping("/addInterest")
+    @ResponseBody
+    public String addInterest(@RequestBody InterestDto request) {
+        String result = interestService.addInterest(request);
+        if (result.equals("Success"))
+        {
+            return result;
+        }
+        return "오류가 발생하였습니다.";
+    }
+
+    @GetMapping("/deleteInterest")
+    @ResponseBody
+    public String deleteInterest(@RequestBody InterestDto request) {
+        String result = interestService.deleteInterest(request);
+
+        if (result.equals("Success"))
+        {
+            return result;
+        }
+        return "오류가 발생하였습니다.";
     }
 }
