@@ -13,7 +13,7 @@ public class MemberDto {
     private String name;
     private String email;
     private String password;
-    private String CheckPassword;
+    private String checkPassword;
     private int userCheckQuestionNumber;
     private String userCheckQuestionAnswer;
 }

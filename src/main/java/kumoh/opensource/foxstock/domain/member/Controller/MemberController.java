@@ -25,24 +25,26 @@ public class MemberController {
     private final InterestService interestService;
 
     @PostMapping("/signUp")
-    public ResponseEntity signup(@RequestBody MemberDto request) {
+    @ResponseBody
+    public boolean signup(@RequestBody MemberDto request) {
         log.info("userName = {}, userId = {}, password = {}, userCheckQuestionNumber = {}, userCheckQuestionAnswer = {}"
                 ,request.getName(), request.getEmail(), request.getPassword(),request.getUserCheckQuestionNumber(),request.getUserCheckQuestionAnswer());
         if(memberService.signup(request).equals("Success")) {
-            return new ResponseEntity(HttpStatus.CREATED);
+            return true;
         }
-        return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        return false;
     }
 
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody MemberDto request) {
+    @ResponseBody
+    public boolean login(@RequestBody MemberDto request) {
         log.info("userId = {}, password = {}", request.getEmail(), request.getPassword());
 
         if(memberService.login(request).equals("Success")) {
-            return new ResponseEntity(HttpStatus.CREATED);
+            return true;
         }
 
-        return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        return false;
     }
 
     @PostMapping("/findId")
@@ -82,30 +84,30 @@ public class MemberController {
         return result;
     }
 
-    @GetMapping("/addInterest")
+    @PostMapping("/addInterest")
     @ResponseBody
-    public String addInterest(@RequestBody InterestDto request) {
+    public boolean addInterest(@RequestBody InterestDto request) {
         String result = interestService.addInterest(request);
         if (result.equals("Success"))
         {
-            return result;
+            return true;
         }
-        return "오류가 발생하였습니다.";
+        return false;
     }
 
-    @GetMapping("/deleteInterest")
+    @PostMapping("/deleteInterest")
     @ResponseBody
-    public String deleteInterest(@RequestBody InterestDto request) {
+    public boolean deleteInterest(@RequestBody InterestDto request) {
         String result = interestService.deleteInterest(request);
 
         if (result.equals("Success"))
         {
-            return result;
+            return false;
         }
-        return "오류가 발생하였습니다.";
+        return true;
     }
 
-    @GetMapping("/returnInterest")
+    @PostMapping("/returnInterest")
     @ResponseBody
     public List<String> returnInterest(@RequestBody InterestDto request) {
         List<String> result = interestService.returnInterest(request);
