@@ -21,7 +21,7 @@ public class Member {
     @Column(name = "user_name",nullable = false)
     private String name;
 
-    @Column(name = "user_id", unique = true)
+    @Column(name = "email", unique = true)
     private String email;
 
     @Column(name = "password", nullable = false)
