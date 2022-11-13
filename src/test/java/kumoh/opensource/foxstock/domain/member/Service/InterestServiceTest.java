@@ -16,7 +16,7 @@ class InterestServiceTest {
     @Test
     void addInterest() {
         InterestDto interestDto = new InterestDto();
-        interestDto.setEmail("aaa");
+        interestDto.setEmail("idid");
         interestDto.setSrtnCd("000040");
 
         interestService.addInterest(interestDto);
@@ -25,10 +25,18 @@ class InterestServiceTest {
     @Test
     void deleteInterest() {
         InterestDto interestDto = new InterestDto();
-        interestDto.setEmail("aaa");
-        interestDto.setSrtnCd("000020");
+        interestDto.setEmail("idid");
+        interestDto.setSrtnCd("000040");
 
         interestService.deleteInterest(interestDto);
+    }
+
+    @Test
+    void returnInterest() {
+        InterestDto interestDto = new InterestDto();
+        interestDto.setEmail("idid");
+
+        interestService.returnInterest(interestDto);
     }
 
 

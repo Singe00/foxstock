@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -101,5 +103,13 @@ public class MemberController {
             return result;
         }
         return "오류가 발생하였습니다.";
+    }
+
+    @GetMapping("/returnInterest")
+    @ResponseBody
+    public List<String> returnInterest(@RequestBody InterestDto request) {
+        List<String> result = interestService.returnInterest(request);
+
+        return result;
     }
 }

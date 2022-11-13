@@ -11,6 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -44,5 +46,20 @@ public class InterestService {
         interestRepository.deleteById(inter.get().getId());
 
         return "Success";
+    }
+
+    public List<String> returnInterest(InterestDto request) {
+        Optional<Member> member = memberRepository.findByEmail(request.getEmail());
+
+        List<Interest> inters = interestRepository.findAllByUserId(member.get().getId());
+        List<String> interList = new ArrayList<>();
+
+        for(Interest inter : inters){
+            String interestDto = inter.getSrtnCd();
+
+            interList.add(interestDto);
+        }
+        log.info("{}",interList);
+        return interList;
     }
 }
