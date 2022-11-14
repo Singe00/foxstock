@@ -36,6 +36,11 @@ public class StockScheduler {
 
         List<Stock> stocks = stockRepository.findAll();
         setPrice(stocks);
+        stocks.forEach(stock -> {
+            setExpectedReturn(stock);
+            setPurchasePrice(stock);
+            stockRepository.save(stock);
+        });
 
         return stocks;
     }
