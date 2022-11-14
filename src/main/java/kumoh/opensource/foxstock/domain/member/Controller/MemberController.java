@@ -3,6 +3,7 @@ package kumoh.opensource.foxstock.domain.member.Controller;
 import kumoh.opensource.foxstock.domain.member.Dto.*;
 import kumoh.opensource.foxstock.domain.member.Service.InterestService;
 import kumoh.opensource.foxstock.domain.member.Service.MemberService;
+import kumoh.opensource.foxstock.domain.stock.domain.Stock;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -109,9 +110,7 @@ public class MemberController {
 
     @PostMapping("/returnInterest")
     @ResponseBody
-    public List<String> returnInterest(@RequestBody InterestDto request) {
-        List<String> result = interestService.returnInterest(request);
-
-        return result;
+    public List<Stock> returnInterest(@RequestBody InterestDto request) {
+        return interestService.returnInterest(request);
     }
 }

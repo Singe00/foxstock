@@ -6,6 +6,8 @@ import kumoh.opensource.foxstock.domain.member.Domain.Member;
 import kumoh.opensource.foxstock.domain.member.Dto.InterestDto;
 import kumoh.opensource.foxstock.domain.member.Repository.InterestRepository;
 import kumoh.opensource.foxstock.domain.member.Repository.MemberRepository;
+import kumoh.opensource.foxstock.domain.stock.domain.Stock;
+import kumoh.opensource.foxstock.domain.stock.repository.StockRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,7 @@ public class InterestService {
 
     @Autowired
     private final MemberRepository memberRepository;
+    private final StockRepository stockRepository;
 
     Interest interest = new Interest();
 
@@ -48,18 +51,12 @@ public class InterestService {
         return "Success";
     }
 
-    public List<String> returnInterest(InterestDto request) {
-        Optional<Member> member = memberRepository.findByEmail(request.getEmail());
+    public List<Stock> returnInterest(InterestDto request) {
+        Member member = memberRepository.findByEmail(request.getEmail()).get();
+        List<String> srtnCds = interestRepository.findAllByUserId(member.getId()).stream()
+                .map(Interest::getSrtnCd).toList();
 
-        List<Interest> inters = interestRepository.findAllByUserId(member.get().getId());
-        List<String> interList = new ArrayList<>();
+        return stockRepository.findAllById(srtnCds);
 
-        for(Interest inter : inters){
-            String interestDto = inter.getSrtnCd();
-
-            interList.add(interestDto);
-        }
-        log.info("{}",interList);
-        return interList;
     }
 }
