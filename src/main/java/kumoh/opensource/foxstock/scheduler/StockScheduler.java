@@ -10,6 +10,7 @@ import kumoh.opensource.foxstock.domain.stock.domain.Stock;
 import kumoh.opensource.foxstock.domain.stock.repository.StockRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -30,8 +31,8 @@ public class StockScheduler {
     private final StockRepository stockRepository;
 
 
-    //@Scheduled
-    public List<Stock> dailyUpdate(){
+    @Scheduled(cron = " 0 0 5 * * * ")
+    public void dailyUpdate(){
         priceApi.saveAllPrice();
 
         List<Stock> stocks = stockRepository.findAll();
@@ -42,7 +43,6 @@ public class StockScheduler {
             stockRepository.save(stock);
         });
 
-        return stocks;
     }
 
     //@Scheduled
