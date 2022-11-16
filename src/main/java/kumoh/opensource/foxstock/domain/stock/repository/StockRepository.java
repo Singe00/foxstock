@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,6 +14,10 @@ import java.util.Optional;
 @Repository
 public interface StockRepository extends JpaRepository<Stock, String> {
     List<Stock> findAllByCapital(Long capital);
-    List<Stock> findAllByMrktCtg(String mrktCtg, Pageable pageable);
+    Page<Stock> findAllByMrktCtg(String mrktCtg, Pageable pageable);
+
+    @Transactional
+    void deleteAllByMrktCtg(String mrktCtg);
+
 
 }

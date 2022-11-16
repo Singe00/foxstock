@@ -55,6 +55,9 @@ public class StockScheduler {
         setPrice(stocks);
         setFinaStat(stocks);
 
+        stockRepository.deleteAllByMrktCtg("KONEX");
+
+
         return stocks;
     }
 
@@ -62,6 +65,7 @@ public class StockScheduler {
     public void subUpdate(){
         List<Stock> stocks = stockRepository.findAllByCapital(-1L);
         setFinaStat(stocks);
+
     }
 
     private List<Stock> setCode(){

@@ -48,7 +48,7 @@ public class FinaStatApi {
     private void saveFinaStatByBizYearAndCrno(String bizYear, String crno){
         String request = apiRequestFormat.request(url,apiKey, bizYear,crno);
         try {
-            Thread.sleep(2000);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }

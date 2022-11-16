@@ -27,4 +27,9 @@ class StockRepositoryTest {
 
     }
 
+    @Test
+    void deleteTest(){
+        stockRepository.deleteAllByMrktCtg("KONEX");
+    }
+
 }
