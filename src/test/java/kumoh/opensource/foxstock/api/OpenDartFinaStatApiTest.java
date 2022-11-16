@@ -1,5 +1,6 @@
 package kumoh.opensource.foxstock.api;
 
+import kumoh.opensource.foxstock.api.dto.OpenDartFinaStatDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,13 +15,14 @@ class OpenDartFinaStatApiTest {
 
     @Test
     void openDartFinaStatRequestTest(){
-        String url = "https://opendart.fss.or.kr/api/fnlttSinglAcntAll.json";
-        String apiKey = ConstServiceKey.OPEN_DART_KEY;
-        String nexenCorpCode = "00167192";
+        String nexenSrtnCd = "005720";
 
-        String result = openDartFinaStatApi.request(url, apiKey, nexenCorpCode);
+        openDartFinaStatApi.saveOpenDartFinaStatBySrtnCd(nexenSrtnCd);
 
-        System.out.println(result);
+
+
     }
+
+
 
 }

@@ -22,11 +22,6 @@ public class StockController {
 
     private final StockRepository stockRepository;
 
-    @GetMapping("/allStock")
-    public Object getAllStock(){
-        return stockRepository.findAll();
-    }
-
     @GetMapping("/stock/all")
     public Object getAllStockOrderedPage(@RequestParam int page){
         PageRequest pageRequest = PageRequest.of(page,30,Sort.by(Sort.Direction.DESC, "expectedReturn"));

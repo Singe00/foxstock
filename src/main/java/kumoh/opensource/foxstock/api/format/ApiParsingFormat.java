@@ -1,9 +1,7 @@
 package kumoh.opensource.foxstock.api.format;
 
 import kumoh.opensource.foxstock.api.dto.CodeDto;
-import kumoh.opensource.foxstock.api.dto.FinaStatDto;
 import kumoh.opensource.foxstock.api.dto.PriceDto;
-import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -11,9 +9,7 @@ import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Component
 public class ApiParsingFormat {
@@ -42,27 +38,6 @@ public class ApiParsingFormat {
         return codes;
     }
 
-    public List<FinaStatDto> finaStatParsing(String result) {
-        JSONArray jsonArray = getJsonArray(result);
-
-        List<FinaStatDto> finaStatDtoList = new ArrayList<>();
-
-        for(int i = 0; i < jsonArray.size(); i++){
-            JSONObject obj = (JSONObject) jsonArray.get(i);
-
-            FinaStatDto finaStatDto = new FinaStatDto();
-
-            finaStatDto.setCrno((String) obj.get("crno"));
-            finaStatDto.setBizYear((String) obj.get("bizYear"));
-            finaStatDto.setEnpCrtmNpf((String) obj.get("enpCrtmNpf"));
-            finaStatDto.setEnpTcptAmt((String) obj.get("enpTcptAmt"));
-            finaStatDto.setFnclDcdNm((String) obj.get("fnclDcdNm"));
-            finaStatDtoList.add(finaStatDto);
-
-        }
-
-        return finaStatDtoList;
-    }
 
     public List<PriceDto> priceParsing(String result) {
 

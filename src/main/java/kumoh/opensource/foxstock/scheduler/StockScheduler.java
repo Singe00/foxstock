@@ -1,10 +1,8 @@
 package kumoh.opensource.foxstock.scheduler;
 
-import kumoh.opensource.foxstock.api.CodeApi;
-import kumoh.opensource.foxstock.api.FinaStatApi;
-import kumoh.opensource.foxstock.api.PriceApi;
+import kumoh.opensource.foxstock.api.*;
 import kumoh.opensource.foxstock.api.dto.CodeDto;
-import kumoh.opensource.foxstock.api.dto.FinaStatDto;
+import kumoh.opensource.foxstock.api.dto.OpenDartFinaStatDto;
 import kumoh.opensource.foxstock.api.dto.PriceDto;
 import kumoh.opensource.foxstock.domain.stock.domain.Stock;
 import kumoh.opensource.foxstock.domain.stock.repository.StockRepository;
@@ -26,7 +24,8 @@ import java.util.concurrent.TimeUnit;
 public class StockScheduler {
 
     private final CodeApi codeApi;
-    private final FinaStatApi finaStatApi;
+    private final OpenDartCodeApi openDartCodeApi;
+    private final OpenDartFinaStatApi openDartFinaStatApi;
     private final PriceApi priceApi;
     private final StockRepository stockRepository;
 
@@ -49,14 +48,14 @@ public class StockScheduler {
     public List<Stock> yearlyUpdate(){
         codeApi.saveAllCode();
         priceApi.saveAllPrice();
-        finaStatApi.deleteAllFinaStatDto();
+        openDartCodeApi.parsingXml();
+        openDartFinaStatApi.deleteAllFinaStat();
 
         List<Stock> stocks = setCode();
         setPrice(stocks);
         setFinaStat(stocks);
 
         stockRepository.deleteAllByMrktCtg("KONEX");
-
 
         return stocks;
     }
@@ -100,40 +99,19 @@ public class StockScheduler {
 
     private void setFinaStat(List<Stock> stocks){
         stocks.forEach(stock -> {
-            String crno = stock.getCrno();
-            finaStatApi.saveFinaStatDtoByCrno(crno);
-            List<FinaStatDto> finaStatByCrno = finaStatApi.getFinaStatByCrno(crno);
+            String srtnCd = stock.getSrtnCd();
+            openDartFinaStatApi.saveOpenDartFinaStatBySrtnCd(srtnCd);
+            OpenDartFinaStatDto finaStat = openDartFinaStatApi.getFinaStat(srtnCd);
 
-            setFirstCapital(stock,finaStatByCrno);
+            stock.setCapital(finaStat.getFirstCapital());
             setBps(stock);
             setPbr(stock);
-            setAverageRoe(stock, finaStatByCrno);
+            setAverageRoe(stock, finaStat);
             setExpectedReturn(stock);
             setPurchasePrice(stock);
 
             stockRepository.save(stock);
         });
-    }
-
-    private void setFirstCapital(Stock stock, List<FinaStatDto> finaStatDtos) {
-        int currentYear = LocalDate.now().getYear();
-        String firstYear = Integer.toString(currentYear-1);
-
-        Optional<FinaStatDto> firstFinaStat = finaStatDtos.stream()
-                .filter(finaStatDto -> finaStatDto.getBizYear().equals(firstYear))
-                .filter(finaStatDto -> finaStatDto.getFnclDcdNm().contains("연결"))
-                .findFirst();
-
-        if(firstFinaStat.isEmpty()){
-            firstFinaStat = finaStatDtos.stream()
-                    .filter(finaStatDto -> finaStatDto.getBizYear().equals(firstYear))
-                    .filter(finaStatDto -> finaStatDto.getFnclDcdNm().contains("별도"))
-                    .findFirst();
-        }
-
-        Long firstCapital = firstFinaStat.map(finaStatDto -> Long.parseLong(finaStatDto.getEnpTcptAmt())).orElse(-1L);
-
-        stock.setCapital(firstCapital);
     }
 
     private void setBps(Stock stock) {
@@ -152,41 +130,18 @@ public class StockScheduler {
     }
 
 
-    private void setAverageRoe(Stock stock, List<FinaStatDto> finaStatDtos){
-        int currentYear = LocalDate.now().getYear();
-        String firstYear = Integer.toString(currentYear-1);
-        String secondYear = Integer.toString(currentYear-2);
-        String thirdYear = Integer.toString(currentYear-3);
+    private void setAverageRoe(Stock stock, OpenDartFinaStatDto finaStat){
+        long firstCapital = finaStat.getFirstCapital();
+        long secondCapital = finaStat.getSecondCapital();
+        long thirdCapital = finaStat.getThirdCapital();
 
-        List<FinaStatDto> finaStats = finaStatDtos.stream()
-                .filter(finaStatDto -> finaStatDto.getFnclDcdNm().contains("연결")).toList();
-
-        if(finaStats.isEmpty()){
-            finaStats = finaStatDtos.stream()
-                    .filter(finaStatDto -> finaStatDto.getFnclDcdNm().contains("별도")).toList();
-        }
-
-        Optional<FinaStatDto> firstFinaStat = finaStats.stream()
-                .filter(finaStatDto -> finaStatDto.getBizYear().equals(firstYear)).findFirst();
-        Optional<FinaStatDto> secondFinaStat = finaStats.stream()
-                .filter(finaStatDto -> finaStatDto.getBizYear().equals(secondYear)).findFirst();
-        Optional<FinaStatDto> thirdFinaStat = finaStats.stream()
-                .filter(finaStatDto -> finaStatDto.getBizYear().equals(thirdYear)).findFirst();
-
-
-        long firstCapital = Long.parseLong(firstFinaStat.map(FinaStatDto::getEnpTcptAmt).orElse("-1"));
-        long secondCapital = Long.parseLong(secondFinaStat.map(FinaStatDto::getEnpTcptAmt).orElse("-1"));
-        long thirdCapital = Long.parseLong(thirdFinaStat.map(FinaStatDto::getEnpTcptAmt).orElse("-1"));
-
-        long firstProfit = Long.parseLong(firstFinaStat.map(FinaStatDto::getEnpCrtmNpf).orElse("0"));
-        long secondProfit = Long.parseLong(secondFinaStat.map(FinaStatDto::getEnpCrtmNpf).orElse("0"));
-        long thirdProfit = Long.parseLong(thirdFinaStat.map(FinaStatDto::getEnpCrtmNpf).orElse("0"));
+        long firstProfit = finaStat.getFirstProfit();
+        long secondProfit = finaStat.getSecondProfit();
+        long thirdProfit = finaStat.getThirdProfit();
 
         double firstRoe = (double)firstProfit/firstCapital;
         double secondRoe = (double)secondProfit/secondCapital;
         double thirdRoe = (double)thirdProfit/thirdCapital;
-
-
 
         stock.setAverageRoe( (double)Math.round(((firstRoe + secondRoe + thirdRoe) / 3) * 100 )/ 100 + 1);
 

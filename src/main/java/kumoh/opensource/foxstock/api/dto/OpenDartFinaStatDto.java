@@ -14,8 +14,9 @@ import javax.persistence.Id;
 public class OpenDartFinaStatDto {
 
     @Id
+    String srtnCd;
     String corpCode;
-    String coprName;
+    String corpName;
     Long firstCapital;
     Long secondCapital;
     Long thirdCapital;
