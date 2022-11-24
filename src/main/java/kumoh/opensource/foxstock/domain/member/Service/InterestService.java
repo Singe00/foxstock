@@ -33,15 +33,23 @@ public class InterestService {
     Interest interest = new Interest();
 
     public String addInterest(InterestDto request) {
+
         Optional<Member> member = memberRepository.findByEmail(request.getEmail());
 
-        interest.setId(null);
-        interest.setUserId(member.get().getId());
-        interest.setSrtnCd(request.getSrtnCd());
+        if (interestRepository.findByUserIdAndSrtnCd(member.get().getId(),request.getSrtnCd()).isPresent())
+        {
+            log.info("이미 목록에 있는 종목입니다.");
+            return "Fail";
+        }
+        else {
+            interest.setId(null);
+            interest.setUserId(member.get().getId());
+            interest.setSrtnCd(request.getSrtnCd());
 
-        interestRepository.save(interest);
+            interestRepository.save(interest);
 
-        return "Success";
+            return "Success";
+        }
     }
 
     public String deleteInterest(InterestDto request) {

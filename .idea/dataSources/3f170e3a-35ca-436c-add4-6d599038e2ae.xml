@@ -1103,31 +1103,31 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
     </user>
     <table id="300" parent="288" name="code_dto">
       <Engine>InnoDB</Engine>
-      <CollationName>utf8mb4_0900_ai_ci</CollationName>
+      <CollationName>utf8mb3_general_ci</CollationName>
     </table>
     <table id="301" parent="288" name="interest">
       <Engine>InnoDB</Engine>
-      <CollationName>utf8mb4_0900_ai_ci</CollationName>
+      <CollationName>utf8mb3_general_ci</CollationName>
     </table>
     <table id="302" parent="288" name="open_dart_code_dto">
       <Engine>InnoDB</Engine>
-      <CollationName>utf8mb4_0900_ai_ci</CollationName>
+      <CollationName>utf8mb3_general_ci</CollationName>
     </table>
     <table id="303" parent="288" name="open_dart_fina_stat_dto">
       <Engine>InnoDB</Engine>
-      <CollationName>utf8mb4_0900_ai_ci</CollationName>
+      <CollationName>utf8mb3_general_ci</CollationName>
     </table>
     <table id="304" parent="288" name="price_dto">
       <Engine>InnoDB</Engine>
-      <CollationName>utf8mb4_0900_ai_ci</CollationName>
+      <CollationName>utf8mb3_general_ci</CollationName>
     </table>
     <table id="305" parent="288" name="stock">
       <Engine>InnoDB</Engine>
-      <CollationName>utf8mb4_0900_ai_ci</CollationName>
+      <CollationName>utf8mb3_general_ci</CollationName>
     </table>
     <table id="306" parent="288" name="user">
       <Engine>InnoDB</Engine>
-      <CollationName>utf8mb4_0900_ai_ci</CollationName>
+      <CollationName>utf8mb3_general_ci</CollationName>
     </table>
     <column id="307" parent="300" name="srtn_cd">
       <DataType>varchar(32)|0s</DataType>
@@ -1153,7 +1153,7 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
     <column id="312" parent="301" name="id">
-      <AutoIncrement>143</AutoIncrement>
+      <AutoIncrement>1</AutoIncrement>
       <DataType>int|0s</DataType>
       <NotNull>1</NotNull>
       <Position>1</Position>
@@ -1351,7 +1351,7 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
     <column id="357" parent="306" name="id">
-      <AutoIncrement>36</AutoIncrement>
+      <AutoIncrement>1</AutoIncrement>
       <DataType>int|0s</DataType>
       <NotNull>1</NotNull>
       <Position>1</Position>

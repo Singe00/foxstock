@@ -114,7 +114,7 @@ public class MemberController {
         return interestService.returnInterest(request);
     }
 
-    @GetMapping("/returnInterest2")
+    @PostMapping("/returnInterest2")
     @ResponseBody
     public List<String> returnInterest2(@RequestBody InterestDto request) {
         List<String> result = interestService.returnInterest2(request);

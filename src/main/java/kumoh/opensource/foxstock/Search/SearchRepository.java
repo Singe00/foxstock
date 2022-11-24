@@ -10,6 +10,7 @@ import java.util.List;
 
 @Repository
 public interface SearchRepository extends JpaRepository<Stock,String> {
-    List<Stock> findAllBySrtnCd(String searchString);
-    List<Stock> findAllByNameContaining(String searchString);
+
+    Page<Stock> findAllByNameContaining(String searchString, Pageable pageable);
+
 }
