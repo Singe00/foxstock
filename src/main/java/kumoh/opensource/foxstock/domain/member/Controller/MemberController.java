@@ -113,4 +113,12 @@ public class MemberController {
     public List<Stock> returnInterest(@RequestBody InterestDto request) {
         return interestService.returnInterest(request);
     }
+
+    @GetMapping("/returnInterest2")
+    @ResponseBody
+    public List<String> returnInterest2(@RequestBody InterestDto request) {
+        List<String> result = interestService.returnInterest2(request);
+
+        return result;
+    }
 }

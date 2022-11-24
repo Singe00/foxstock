@@ -20,7 +20,7 @@ class MemberServiceTest {
         MemberDto request1 = new MemberDto();
 
         request1.setName("asdasdsa");
-        request1.setEmail("ididid");
+        request1.setEmail("idid");
         request1.setPassword("asdasd");
         request1.setCheckPassword("asdasd");
         request1.setUserCheckQuestionNumber(1);

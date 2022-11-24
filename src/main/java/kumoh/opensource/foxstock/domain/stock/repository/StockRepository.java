@@ -19,5 +19,4 @@ public interface StockRepository extends JpaRepository<Stock, String> {
     @Transactional
     void deleteAllByMrktCtg(String mrktCtg);
 
-
 }

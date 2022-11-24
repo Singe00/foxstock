@@ -26,7 +26,6 @@ public class StockController {
     public Object getAllStockOrderedPage(@RequestParam int page){
         PageRequest pageRequest = PageRequest.of(page,30,Sort.by(Sort.Direction.DESC, "expectedReturn"));
         return stockRepository.findAll(pageRequest);
-
     }
 
     @GetMapping("/stock/kospi")

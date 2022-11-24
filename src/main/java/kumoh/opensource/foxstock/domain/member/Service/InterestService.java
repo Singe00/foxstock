@@ -26,6 +26,8 @@ public class InterestService {
 
     @Autowired
     private final MemberRepository memberRepository;
+
+    @Autowired
     private final StockRepository stockRepository;
 
     Interest interest = new Interest();
@@ -58,5 +60,20 @@ public class InterestService {
 
         return stockRepository.findAllById(srtnCds);
 
+    }
+
+    public List<String> returnInterest2(InterestDto request) {
+        Optional<Member> member = memberRepository.findByEmail(request.getEmail());
+
+        List<Interest> inters = interestRepository.findAllByUserId(member.get().getId());
+        List<String> interList = new ArrayList<>();
+
+        for(Interest inter : inters){
+            String interestDto = inter.getSrtnCd();
+
+            interList.add(interestDto);
+        }
+        log.info("{}",interList);
+        return interList;
     }
 }
