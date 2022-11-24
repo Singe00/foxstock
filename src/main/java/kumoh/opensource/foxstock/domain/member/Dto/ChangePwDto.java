@@ -11,6 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class ChangePwDto {
     private String email;
+    private String nowPassword;
     private String newPassword;
     private String checkNewPassword;
 }

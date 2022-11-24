@@ -109,15 +109,22 @@ public class MemberService {
     }
 
     public String changeUserPw(ChangePwDto request) {
-        if (request.getNewPassword().equals(request.getCheckNewPassword()))
+        if (request.getNowPassword().equals(memberRepository.findByEmail(request.getEmail()).get().getPassword()))
         {
-            if (updateUserInfo(request.getEmail(),request.getNewPassword()).equals("Success"))
+            if (request.getNewPassword().equals(request.getCheckNewPassword()))
             {
-                return "Success";
+                if (updateUserInfo(request.getEmail(),request.getNewPassword()).equals("Success"))
+                {
+                    return "Success";
+                }
+                else {
+                    log.info("errorororororo");
+                    return "오류가 발생하였습니다.";
+                }
             }
             else {
-                log.info("errorororororo");
-                return "오류가 발생하였습니다.";
+                log.info("비밀번호를 확인해주세요");
+                return "비밀번호를 확인해주세요";
             }
         }
         else {
