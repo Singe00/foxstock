@@ -1,6 +1,5 @@
 package kumoh.opensource.foxstock.domain.member.Service;
 
-import kumoh.opensource.foxstock.Search.SearchDto;
 import kumoh.opensource.foxstock.domain.member.Dto.InterestDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
