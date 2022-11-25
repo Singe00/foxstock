@@ -15,12 +15,9 @@ public class Stock {
 
     @Id
     String srtnCd;
-    String crno;
     String name;
     Integer currentPrice;
     String mrktCtg;
-    Long lstgStCnt;
-    Long capital;
     Integer bps;
     Double pbr;
     Double averageRoe;

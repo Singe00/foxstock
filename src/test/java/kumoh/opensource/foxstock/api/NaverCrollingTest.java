@@ -4,17 +4,19 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.io.IOException;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-class OpenDartCodeApiTest {
+class NaverCrollingTest {
 
     @Autowired
-    OpenDartCodeApi openDartCodeApi;
+    NaverCrolling naverCrolling;
 
     @Test
-    void openDartTest() throws IOException, InterruptedException {
-        openDartCodeApi.parsingXml();
+    void crollingTest(){
+        String srtnCd = "000020"; //동화약품
+
+
     }
 
 }

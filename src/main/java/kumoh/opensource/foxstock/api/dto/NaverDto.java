@@ -7,15 +7,16 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-@Entity
 @Data
+@Entity
 @AllArgsConstructor
 @NoArgsConstructor
-public class OpenDartCodeDto {
+public class NaverDto {
 
     @Id
-    String stockCode;
-    String corpName;
-    String corpCode;
-
+    String srtnCd;
+    Double firstRoe;
+    Double secondRoe;
+    Double thirdRoe;
+    Integer bps;
 }

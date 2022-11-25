@@ -21,13 +21,6 @@ public class ApiRequestFormat {
         urlBuilder.append("&" + URLEncoder.encode("pageNo", StandardCharsets.UTF_8) + "=" + URLEncoder.encode("1",StandardCharsets.UTF_8));
         urlBuilder.append("&" + URLEncoder.encode("resultType", StandardCharsets.UTF_8) + "=" + URLEncoder.encode("json",StandardCharsets.UTF_8));
 
-        if(bizYear != null){
-            urlBuilder.append("&" + URLEncoder.encode("bizYear", StandardCharsets.UTF_8) + "=" + URLEncoder.encode(bizYear,StandardCharsets.UTF_8));
-        }
-        if(crno != null){
-            urlBuilder.append("&" + URLEncoder.encode("crno", StandardCharsets.UTF_8) + "=" + URLEncoder.encode(crno,StandardCharsets.UTF_8));
-        }
-
         HttpURLConnection con = null;
 
         try{

@@ -21,7 +21,7 @@ public class PriceApi {
 
     private final PriceDtoRepository priceDtoRepository;
 
-    public PriceDto getPriceBySrtnCd(String srtnCd) {
+    public PriceDto getPriceDtoBySrtnCd(String srtnCd) {
         return priceDtoRepository.findById(srtnCd).get();
     }
 

@@ -2,6 +2,7 @@ package kumoh.opensource.foxstock.scheduler;
 
 
 import kumoh.opensource.foxstock.domain.stock.domain.Stock;
+import kumoh.opensource.foxstock.domain.stock.repository.StockRepository;
 import org.json.simple.parser.ParseException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,16 +16,14 @@ class StockSchedulerTest {
 
     @Autowired
     private StockScheduler stockScheduler;
+    @Autowired
+    private StockRepository stockRepository;
 
     @Test
     void schedulerTest(){
-        List<Stock> stocks = stockScheduler.yearlyUpdate();
+        stockScheduler.yearlyUpdate();
     }
 
-    @Test
-    void supUpdate(){
-        stockScheduler.subUpdate();
-    }
 
     @Test
     void dailyUpdate(){

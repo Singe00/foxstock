@@ -13,7 +13,6 @@ import java.util.Optional;
 
 @Repository
 public interface StockRepository extends JpaRepository<Stock, String> {
-    List<Stock> findAllByCapital(Long capital);
     Page<Stock> findAllByMrktCtg(String mrktCtg, Pageable pageable);
 
     @Transactional

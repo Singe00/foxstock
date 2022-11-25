@@ -1293,7 +1293,7 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
     <column id="343" parent="304" name="id">
-      <AutoIncrement>5</AutoIncrement>
+      <AutoIncrement>1</AutoIncrement>
       <DataType>int|0s</DataType>
       <NotNull>1</NotNull>
       <Position>1</Position>
