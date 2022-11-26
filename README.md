@@ -38,7 +38,7 @@
 ### Prerequisite
   -  작성한 코드를 실행하기 전에 설치해야할 pakage및 의존성
   1. Java17
-  2. 
+  2. MySQL
 
 ------------
 
