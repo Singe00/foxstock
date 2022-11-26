@@ -24,11 +24,14 @@
 
 ### Environment
   -  해당 앱은 안드로이드, IOS, 웹에서 동작한다. 사용자들이 불편함을 겪지 않도록 어느 환경에서도 동작할 수 있는 크로스플랫폼을 기반으로 개발하였다. 
-    Frontend는 React Native를 기반으로 React Navigation, React Query, paper를 사용하여 제작하였다. 
-    Backend는 Spring - JPA - MySQL을 사용하였다.
+  -  Frontend
+      > React Native
+      + React Navigation
+      + React Query
+      + paper
     
-1. **GitHub** 
-    - 사용한 오픈소스, 오픈API, 패키지는 어떤 것이 있고.. 해당 오픈소스, 오픈API, 패키지의 어떤 버전을 활용했고 등등
+  - Backend
+    + Spring - JPA - MySQL
     
 ------------
 
@@ -47,12 +50,11 @@
     1. 금융위원회_주식시세정보
     2. 금융위원회_KRX상장종목정보
     3. 금융위원회_기업 재무정보
-------------
 
-### Usage
-작성한 코드를 어떻게 실행해야 하는지에 대한 가이드라인이다. Usage Example을 함께 작성하면 좋다.
 
-이 외에도 라이센스, contributing 같은 것들도 있지만 처음부터 readme를 복잡하게 작성하기 보단 프로젝트의 규모가 커지면서 디테일하게 추가하며 다듬는 것이 좋다.
+1. **GitHub** 
+    - 사용한 오픈소스, 오픈API, 패키지는 어떤 것이 있고.. 해당 오픈소스, 오픈API, 패키지의 어떤 버전을 활용했고 등등
+
 
 ------------
  
