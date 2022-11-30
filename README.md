@@ -98,6 +98,7 @@ public class MemberService {
             return "존재하지 않는 아이디입니다.";
         }
     }
+    
     (중략)
 }
 
@@ -121,6 +122,8 @@ public class MemberController {
 
         return false;
     }
+    
+    (중략)
 }
 
 ```
