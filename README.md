@@ -39,6 +39,29 @@
   -  작성한 코드를 실행하기 전에 설치해야할 pakage및 의존성
   1. Java17
   2. MySQL
+  3. Spring 2.7.4(Gradle)
+  
+```java
+plugins {
+    id 'org.springframework.boot' version '2.7.4'
+    id 'io.spring.dependency-management' version '1.0.14.RELEASE'
+    id 'java'
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'com.googlecode.json-simple:json-simple:1.1.1'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.7.4'
+    implementation 'mysql:mysql-connector-java'
+
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+```
+
+
 
 ------------
 
@@ -49,8 +72,6 @@
   -  오픈API
    1. 금융위원회_주식시세정보
    2. 금융위원회_KRX상장종목정보
-   3. 금융위원회_기업 재무정보
-   4. 네이버 재무정보 크롤링
 
 ------------
  
