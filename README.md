@@ -61,6 +61,69 @@ dependencies {
 }
 ```
 
+------------
+### Getting Started
+다음은 Java에서 Spring Data Repositories를 사용하는 애플리케이션의 간단한 티저입니다.
+```java
+
+@Repository
+public interface MemberRepository extends JpaRepository<Member,Long> {
+    Optional<Member> findByEmail(String email);
+    Optional<Member> findByName(String name);
+}
+
+
+@Service
+@Slf4j
+@RequiredArgsConstructor
+public class MemberService {
+    @Autowired
+    private final MemberRepository memberRepository;
+
+    Member member = new Member();
+
+    public String login(MemberDto request) {
+        if (memberRepository.findByEmail(request.getEmail()).isPresent())
+        {
+            Optional<Member> member = memberRepository.findByEmail(request.getEmail());
+            log.info("db password = {}, input password = {}",member.get().getPassword(),request.getPassword());
+            if (member.get().getPassword().equals(request.getPassword())) {
+                return "Success";
+            }
+            else{
+                return "비밀번호가 일치하지 않습니다.";
+            }
+        }
+        else {
+            return "존재하지 않는 아이디입니다.";
+        }
+    }
+    (중략)
+}
+
+@Slf4j
+@RestController
+@RequiredArgsConstructor
+@CrossOrigin
+public class MemberController {
+
+    @Autowired
+    private final MemberService memberService;
+
+    @PostMapping("/login")
+    @ResponseBody
+    public boolean login(@RequestBody MemberDto request) {
+        log.info("userId = {}, password = {}", request.getEmail(), request.getPassword());
+
+        if(memberService.login(request).equals("Success")) {
+            return true;
+        }
+
+        return false;
+    }
+}
+
+```
 
 
 ------------
