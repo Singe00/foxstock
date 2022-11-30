@@ -127,10 +127,7 @@ public class MemberController {
 
 ------------
 
-### OpenSource 및 오픈API
-  -  OpenSource
-    1. React Native : NativeBase 
-    
+### OpenSource 및 오픈API    
   -  오픈API
    1. [금융위원회_주식시세정보](https://www.data.go.kr/data/15094808/openapi.do)
    2. [금융위원회_KRX상장종목정보](https://www.data.go.kr/tcs/dss/selectApiDataDetailView.do?publicDataPk=15094775)
