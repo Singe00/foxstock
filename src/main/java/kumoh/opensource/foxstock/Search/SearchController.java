@@ -18,7 +18,7 @@ public class SearchController {
 
     @GetMapping("/stock/search")
     public Object StockSearch(@RequestParam String query){
-        PageRequest pageRequest = PageRequest.of(0,30, Sort.by(Sort.Direction.DESC, "expectedReturn"));
+        PageRequest pageRequest = PageRequest.of(0,Integer.MAX_VALUE, Sort.by(Sort.Direction.DESC, "expectedReturn"));
         return searchRepository.findAllByNameContaining(query,pageRequest);
     }
 }
