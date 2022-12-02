@@ -7,12 +7,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class PriceAPITest {
 
-    @Autowired
-    private PriceApi priceApi;
-
-    @Test
-    void priceTest(){
-        priceApi.saveAllPrice();
-    }
+//    @Autowired
+//    private PriceApi priceApi;
+//
+//    @Test
+//    void priceTest(){
+//        priceApi.saveAllPrice();
+//    }
 
 }

@@ -45,9 +45,9 @@ public class StockScheduler {
 
     //@Scheduled
     public void yearlyUpdate(){
-        //codeApi.saveAllCode();
-        //priceApi.saveAllPrice();
-        //naverCrolling.saveAllFinaStat();
+        codeApi.saveAllCode();
+        priceApi.saveAllPrice();
+        naverCrolling.saveAllFinaStat();
 
         List<CodeDto> codes = codeApi.getAllCode();
         codes.forEach(code -> {
@@ -99,7 +99,7 @@ public class StockScheduler {
         double thirdRoe = finaStat.getThirdRoe();
 
         if(firstRoe < 0.0 || secondRoe < 0.0 || thirdRoe <0.0 ||
-            firstRoe > 100.0 || secondRoe > 100.0 || thirdRoe > 100.0){
+            firstRoe > 50.0 || secondRoe > 50.0 || thirdRoe > 50.0){
             return 0.0;
         }
 
